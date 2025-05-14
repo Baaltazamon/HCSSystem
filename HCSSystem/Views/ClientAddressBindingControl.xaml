@@ -25,7 +25,7 @@
                   Style="{StaticResource MaterialDesignDataGrid}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Адрес" Binding="{Binding FullAddress}" />
-                        <DataGridTextColumn Header="С лицевого счёта" Binding="{Binding PersonalAccountNumber}" />
+                        <DataGridTextColumn Header="№ лицевого счёта" Binding="{Binding PersonalAccountNumber}" />
                         <DataGridTextColumn Header="С даты" Binding="{Binding OwnershipStartDate, ConverterCulture=ru, StringFormat=d}" />
                         <DataGridTemplateColumn Header="Удалить">
                             <DataGridTemplateColumn.CellTemplate>

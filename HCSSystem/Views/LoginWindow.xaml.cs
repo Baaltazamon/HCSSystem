@@ -30,5 +30,11 @@ namespace HCSSystem.Views
             if (DataContext is LoginViewModel vm)
                 vm.Password = ((PasswordBox)sender).Password;
         }
+
+        private void StackPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("Отправьте запрос администратору для сброса пароля", "Сброс пароля", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+        }
     }
 }
