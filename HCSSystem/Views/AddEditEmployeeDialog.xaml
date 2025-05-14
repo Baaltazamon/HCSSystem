@@ -1,0 +1,79 @@
+﻿<Window x:Class="HCSSystem.Views.AddEditEmployeeDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Height="600" Width="400" WindowStartupLocation="CenterScreen" WindowStyle="None" Background="Transparent" AllowsTransparency="True">
+
+    <Border CornerRadius="15" Background="#FFEFF3F6" BorderThickness="2" BorderBrush="#FF2196F3">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="0,0,0,10">
+                <TextBox Margin="0,10,0,0"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Логин"
+                 Text="{Binding Username}" 
+                 IsEnabled="{Binding IsEditMode, Converter={StaticResource InverseBooleanConverter}}"/>
+
+                <TextBox Margin="0,10,0,0"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Фамилия"
+                 Text="{Binding LastName}" />
+
+                <TextBox Margin="0,10,0,0"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Имя"
+                 Text="{Binding FirstName}" />
+
+                <TextBox Margin="0,10,0,0"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Отчество"
+                 Text="{Binding MiddleName}" />
+
+                <DatePicker Margin="0,10,0,0"
+                    Style="{StaticResource MaterialDesignDatePicker}"
+                    materialDesign:HintAssist.Hint="Дата рождения"
+                    SelectedDate="{Binding BirthDate}" />
+
+                <TextBox Margin="0,10,0,0"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Телефон"
+                 Text="{Binding Phone}" />
+
+                <TextBox Margin="0,10,0,0"
+                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                 materialDesign:HintAssist.Hint="Email"
+                 Text="{Binding Email}" />
+
+                <ComboBox Margin="0,10,0,0"
+                          Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                          materialDesign:HintAssist.Hint="Роль"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedRole}"
+                          ItemsSource="{Binding Roles}" />
+
+                <Button Content="Загрузить фото"
+                Margin="0,10,0,0"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                Command="{Binding UploadPhotoCommand}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+                <Button Content="Отмена"
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Command="{Binding CancelCommand}" />
+
+                <Button Content="Сохранить"
+                Margin="10,0,0,0"
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Command="{Binding SaveCommand}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

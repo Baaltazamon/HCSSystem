@@ -1,0 +1,87 @@
+﻿<Window x:Class="HCSSystem.Views.MeterReadingsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Показания"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Height="600" Width="800" AllowsTransparency="True" WindowStyle="None" Background="Transparent">
+
+    <Window.Resources>
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsApproved}" Value="True">
+                    <Setter Property="Background" Value="#DFFFE0"/>
+                    <!-- светло-зелёный -->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsApproved}" Value="False">
+                    <Setter Property="Background" Value="#FFF3F3"/>
+                    <!-- светло-красный -->
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border CornerRadius="15" Background="#FFEFF3F6" BorderThickness="2" BorderBrush="#FF2196F3">
+        <Grid Margin="20">
+            <StackPanel>
+                <TextBlock Text="{Binding MeterNumber}" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <Button Content="Добавить показание" Width="200" Margin="0,0,0,10"
+                    Command="{Binding AddCommand}" />
+
+                <DataGrid ItemsSource="{Binding Readings}"
+                      AutoGenerateColumns="False" Height="400"
+                      SelectedItem="{Binding SelectedReading}"
+                      IsReadOnly="True">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding ReadingDate, StringFormat=d, ConverterCulture=ru}" Width="120"/>
+                        <DataGridTextColumn Header="Значение" Binding="{Binding Value}" Width="100"/>
+                        <DataGridCheckBoxColumn Header="Подтв." Binding="{Binding IsApproved}" Width="80"/>
+
+                        <!-- Только для сотрудников/админов -->
+                        <DataGridTextColumn Header="Подтвердил"
+                                        Binding="{Binding ApprovedByLogin}"
+                                        Width="*"
+                                        Visibility="{Binding DataContext.ShowApprovedByColumn, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <DataGridTemplateColumn Header="Действия" Width="180">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Width="35" Height="30" ToolTip="Подтвердить" Padding="0"
+                                                Command="{Binding DataContext.ApproveCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}"
+                                                Visibility="{Binding DataContext.ShowApprovedByColumn, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                IsEnabled="{Binding IsApproved, Converter={StaticResource InverseBooleanConverter}}">
+                                            <materialDesign:PackIcon Kind="CheckBold" />
+                                        </Button>
+
+                                        <Button Width="35" Height="30" ToolTip="Отменить подтверждение" Padding="0"
+                                                Command="{Binding DataContext.UnapproveCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}"
+                                                Visibility="{Binding DataContext.ShowApprovedByColumn, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                IsEnabled="{Binding IsApproved}">
+                                            <materialDesign:PackIcon Kind="CloseCircleOutline" />
+                                        </Button>
+
+                                        <Button Width="35" Height="30" ToolTip="Удалить" Padding="0"
+                                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}">
+                                            <materialDesign:PackIcon Kind="TrashCanOutline" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                    
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Button Content="Закрыть"
+                            Width="100" Height="35"
+                            Click="CloseButton_Click" Margin="0,0,10,0" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

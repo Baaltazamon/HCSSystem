@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="HCSSystem.Views.MetersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="800">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Поиск и Добавить -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <materialDesign:PackIcon Kind="Search" VerticalAlignment="Center" Foreground="#FF2196F3" Margin="0,0,5,0" Width="25" Height="25" />
+
+            <TextBox Width="150"
+                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="Поиск по номеру..." />
+
+            <Button Content="Добавить"
+                    Width="100" Margin="10,0,0,0"
+                    Command="{Binding AddCommand}"
+                    Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+            <CheckBox Content="Требуют подтверждения"
+                      IsChecked="{Binding OnlyWithUnapprovedReadings, UpdateSourceTrigger=PropertyChanged}"
+                      Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}"
+                      Style="{StaticResource MaterialDesignFilterChipSecondaryCheckBox}"
+                      Margin="10,0,0,0" />
+
+            <Button Content="Создать все платежные квитанции"
+                    Margin="10,0,0,0"
+                    Command="{Binding GenerateAllPaymentsCommand}"
+                    Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}" FontSize="11" />
+            <Button Padding="0"
+                    Margin="10,0,0,0"
+                    Command="{Binding ExportMeterReadingsCommand}" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Отчет " Cursor="" Margin="5,0,0,0"></TextBlock>
+                    <materialDesign:PackIcon Kind="FileExcel" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Center"></materialDesign:PackIcon>
+                </StackPanel>
+            </Button>
+
+        </StackPanel>
+
+
+        <!-- Таблица -->
+        <DataGrid Grid.Row="1"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding FilteredMeters}"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер счётчика" Binding="{Binding MeterNumberWithBadge}" Width="*"/>
+                <DataGridTextColumn Header="Услуга" Binding="{Binding ServiceName}" Width="*"/>
+                <DataGridTextColumn Header="Дата установки" Binding="{Binding InstallationDate, StringFormat=d, ConverterCulture=ru}" Width="150"/>
+                <DataGridTextColumn Header="Пользователь" Binding="{Binding AddressString}" Width="*"
+                                     Visibility="{Binding DataContext.ShowUserColumn, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                <DataGridTemplateColumn Header="Действия" Width="100"
+                                        Visibility="{Binding DataContext.CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <materialDesign:PopupBox
+                                PlacementMode="RightAndAlignMiddles"
+                                ToolTip="Меню"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                ToolTipService.Placement="Right"
+                                Width="30" Height="30">
+
+                                <StackPanel HorizontalAlignment="Center">
+                                    <Button Margin="2" Padding="0"
+                                            Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="Edit" />
+                                    </Button>
+
+                                    <Button Padding="0"
+                                            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="Trash" />
+                                    </Button>
+
+                                    <Button Padding="0"
+                                            Command="{Binding DataContext.OpenReadingsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="ChartLineVariant" />
+                                    </Button>
+                                    <Button Padding="0" ToolTip="Создать квитанцию на оплату"
+                                            Command="{Binding DataContext.GeneratePaymentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="CashPlus" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

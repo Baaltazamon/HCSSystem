@@ -1,0 +1,60 @@
+﻿<Window x:Class="HCSSystem.Views.AddResidentDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Регистрация жильца"
+        Width="400" Height="500"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Border CornerRadius="15" Background="#FFEFF3F6" BorderThickness="2" BorderBrush="#FF2196F3" Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Фамилия"
+                         Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Имя"
+                         Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Отчество"
+                         Text="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}" />
+
+                <DatePicker Margin="0,10,0,10"
+                            Style="{StaticResource MaterialDesignDatePicker}"
+                            SelectedDate="{Binding BirthDate}"
+                            materialDesign:HintAssist.HelperText="Выберите дату рождения"
+                            materialDesign:HintAssist.Hint="Дата рождения" Height="40" />
+
+                <DatePicker Margin="0,10,0,0"
+                            Style="{StaticResource MaterialDesignDatePicker}"
+                            SelectedDate="{Binding RegistrationDate}"
+                            materialDesign:HintAssist.HelperText="Выберите дату регистрации"
+                            materialDesign:HintAssist.Hint="Дата регистрации" Height="40" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Margin="0,20,0,0">
+                <Button Content="Отмена"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding CancelCommand}" Click="Button_Click" />
+                <Button Content="Сохранить"
+                        Margin="10,0,0,0"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SaveCommand}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

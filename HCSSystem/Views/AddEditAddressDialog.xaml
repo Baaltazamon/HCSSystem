@@ -1,0 +1,74 @@
+﻿<Window x:Class="HCSSystem.Views.AddEditAddressDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Адрес" Width="400" Height="500"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None" Background="Transparent" AllowsTransparency="True">
+
+    <Border CornerRadius="15" Background="#FFEFF3F6" BorderThickness="2" BorderBrush="#FF2196F3">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="0,0,0,10">
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Город"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         Text="{Binding City}" />
+
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Улица"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         Text="{Binding Street}" />
+
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Дом"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         Text="{Binding HouseNumber}" />
+
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Корпус"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         Text="{Binding Building}" />
+
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Квартира"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         Text="{Binding ApartmentNumber}" 
+                         DataObject.Pasting="TextBox_Pasting"
+                         PreviewTextInput="TextBox_PreviewTextInput"/>
+
+                <TextBox Margin="0,10,0,0"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         materialDesign:HintAssist.Hint="Площадь (м²)"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         Text="{Binding PropertyArea}" PreviewTextInput="TextBox_PreviewTextInput"
+                         DataObject.Pasting="TextBox_Pasting"/>
+
+                <CheckBox Margin="0,10,0,0"
+                          Content="Жилое помещение"
+                          IsChecked="{Binding IsResidential}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+                <Button Content="Отмена"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding CancelCommand}" />
+
+                <Button Content="Сохранить"
+                        Margin="10,0,0,0"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SaveCommand}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

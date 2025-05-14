@@ -1,0 +1,220 @@
+﻿<Window x:Class="HCSSystem.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:HCSSystem.ViewModels"
+        xmlns:converters="clr-namespace:HCSSystem.Converters"
+        Title="HCSSystem"
+        Height="720" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToHiddenVisibilityConverter" />
+        <converters:WidthConverter x:Key="WidthConverter" />
+    </Window.Resources>
+
+    <Border CornerRadius="30" Background="#FFEFF3F6" Margin="10"
+            SnapsToDevicePixels="True"
+            Effect="{DynamicResource MaterialDesignElevationShadow4}"
+            MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding MenuWidth}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!-- Кнопка сворачивания меню -->
+            <ToggleButton Width="30" Height="30" Margin="10"
+                          Grid.Row="0" Grid.Column="0" Padding="0"
+                          Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                          Command="{Binding ToggleMenuCommand}" HorizontalAlignment="Left">
+
+            </ToggleButton>
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="30" Height="30"  Margin="10"  Padding="0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignIconForegroundButton}"
+                        Click="ToggleFullscreen_Click">
+                    <materialDesign:PackIcon Kind="Fullscreen" />
+                </Button>
+                <Button Width="30" Height="30"  Margin="10"  Padding="0"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignIconForegroundButton}"
+                        Click="ButtonBase_OnClick">
+                    <materialDesign:PackIcon Kind="Close" />
+                </Button>
+            </StackPanel>
+            
+
+            <!-- Меню -->
+            <Border Grid.Row="1" Grid.Column="0" CornerRadius="0 50 0 30" Margin="0" Background="#FF2196F3">
+                <StackPanel VerticalAlignment="Stretch" Background="{DynamicResource PrimaryHueMidBrush}">
+
+                    <!-- Аватар и имя -->
+                    <StackPanel Margin="10" Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border CornerRadius="40" Width="80" Height="80" Background="White" HorizontalAlignment="Center" Margin="0,-40,0,0">
+                            <Ellipse Width="76" Height="76">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding AvatarPath}" Stretch="UniformToFill" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Border>
+
+                        <TextBlock Text="{Binding FullName}" Foreground="White" FontSize="20" FontWeight="Bold"
+                                   Margin="10" HorizontalAlignment="Center" TextWrapping="Wrap" MaxWidth="230" MaxHeight="50" TextAlignment="Center"/>
+
+                        <TextBlock Text="{Binding RoleName}" Foreground="White" FontSize="14" FontWeight="Bold"
+                                   Margin="0 0 0 10" HorizontalAlignment="Center" />
+
+                    </StackPanel>
+                    <Separator Margin="10 0" />
+
+
+                    <!-- Кнопка Главная -->
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="White" Margin="10,5" Padding="0"
+                            HorizontalAlignment="Left"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}" Click="Button_Click_1">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="Home" Width="24" Height="24" />
+                            <TextBlock Text="Главная" Margin="10 0 0 0" VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Кнопка Клиенты -->
+                    <Button x:Name="ClientsButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White" Margin="10,5" Padding="0"
+                            HorizontalAlignment="Left" Click="ClientsButton_Click" Visibility="{Binding IsEmployeesVisible, Converter={StaticResource BoolToCollapsedConverter}}"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="AccountMultiple" Width="24" Height="24" />
+                            <TextBlock Text="Клиенты" Margin="10 0 0 0" VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Кнопка Сотрудники -->
+                    <Button x:Name="EmployeesButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White" 
+                            Margin="10,5" Padding="0" 
+                            HorizontalAlignment="Left" Click="EmployeesButton_Click"
+                            Visibility="{Binding IsEmployeesVisible, Converter={StaticResource BoolToCollapsedConverter}}"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="Worker" Width="24" Height="24" />
+                            <TextBlock Text="Сотрудники" Margin="10 0 0 0" VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}"   />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="AddressesButton"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Foreground="White" Visibility="{Binding IsEmployeesVisible, Converter={StaticResource BoolToCollapsedConverter}}"
+                            Margin="10,5"
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}"
+                            Click="AddressesButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="MapMarker" Width="24" Height="24" />
+                            <TextBlock Text="Адреса"
+                                       Margin="10 0 0 0"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="ServicesButton"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Foreground="White"
+                            Margin="10,5"
+                            Padding="0" Visibility="{Binding IsEmployeesVisible, Converter={StaticResource BoolToCollapsedConverter}}"
+                            HorizontalAlignment="Left"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}"
+                            Click="ServicesButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="Wrench" Width="24" Height="24" />
+                            <TextBlock Text="Услуги" 
+                                       Margin="10 0 0 0"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="RatesButton"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Foreground="White" Visibility="{Binding IsEmployeesVisible, Converter={StaticResource BoolToCollapsedConverter}}"
+                        Margin="10,5"
+                        Padding="0"
+                        HorizontalAlignment="Left"
+                        Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}"
+                        Click="RatesButton_Click">      
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="CashClock" Width="24" Height="24" />
+                            <TextBlock Text="Тарифы"
+                   Margin="10 0 0 0"
+                   VerticalAlignment="Center"
+                   Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="MetersButton"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Foreground="White"
+                            Margin="10,5"
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}"
+                            Click="MetersButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="Gauge" Width="24" Height="24" />
+                            <TextBlock Text="Счётчики"
+                                       Margin="10 0 0 0"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="PaymentsButton"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Foreground="White"
+                            Margin="10,5"
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}"
+                            Click="PaymentsButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="CreditCardCheckOutline" Width="24" Height="24" />
+                            <TextBlock Text="Платежи"
+                                       Margin="10 0 0 0"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Кнопка Выход -->
+                    <Button Style="{StaticResource MaterialDesignFlatButton}" Foreground="White" Margin="10,5" 
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            Width="{Binding IsMenuExpanded, Converter={StaticResource WidthConverter}}" Click="Button_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="LogoutVariant" Width="24" Height="24" />
+                            <TextBlock Text="Выход" Margin="10 0 0 0" VerticalAlignment="Center"
+                                       Visibility="{Binding IsMenuExpanded, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Border>
+
+            <!-- Контент -->
+            <Border Grid.Column="1" Grid.Row="1" CornerRadius="30" Padding="20" Background="#FFEFF3F6" Margin="0">
+                <ContentControl x:Name="MainContentArea" />
+            </Border>
+        </Grid>
+    </Border>
+</Window>

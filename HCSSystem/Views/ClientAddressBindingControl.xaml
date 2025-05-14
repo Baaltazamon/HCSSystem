@@ -1,0 +1,90 @@
+﻿<Window x:Class="HCSSystem.Views.ClientAddressBindingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Адреса клиента"
+        Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True">
+    <Border CornerRadius="15" Background="#FFEFF3F6" BorderBrush="#FF2196F3" BorderThickness="2" Padding="10" Margin="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Текущие адреса клиента -->
+            <GroupBox Header="Адреса клиента" Margin="10,20,10,10">
+                <DataGrid ItemsSource="{Binding BoundAddresses}"
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedBoundAddress, Mode=TwoWay}"
+                  IsReadOnly="True"
+                  Style="{StaticResource MaterialDesignDataGrid}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Адрес" Binding="{Binding FullAddress}" />
+                        <DataGridTextColumn Header="С лицевого счёта" Binding="{Binding PersonalAccountNumber}" />
+                        <DataGridTextColumn Header="С даты" Binding="{Binding OwnershipStartDate, ConverterCulture=ru, StringFormat=d}" />
+                        <DataGridTemplateColumn Header="Удалить">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding DataContext.UnbindAddressCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" Style="{StaticResource MaterialDesignToolButton}">
+                                        <materialDesign:PackIcon Kind="Delete" />
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+
+            <!-- Доступные адреса -->
+            <GroupBox Header="Привязать новый адрес" Grid.Column="1" Margin="10,20,10,10">
+                <StackPanel>
+                    <TextBox
+                        Margin="0,10,0,0"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        materialDesign:HintAssist.Hint="Поиск адреса"
+                        Text="{Binding AddressSearchText, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <ListBox
+                        ItemsSource="{Binding SearchResults}"
+                        SelectedItem="{Binding SelectedAvailableAddress}"
+                        DisplayMemberPath="FullAddress"
+                        MaxHeight="200"
+                        Style="{StaticResource MaterialDesignListBox}" />
+
+                    <TextBox Margin="0,10,0,10"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                     materialDesign:HintAssist.Hint="Лицевой счёт"
+                     materialDesign:HintAssist.HelperText="Не обязательное поле (может задаваться автоматически)"
+                     Text="{Binding NewAccountNumber}" />
+
+                    <DatePicker Margin="0,10,0,0"
+                        Style="{StaticResource MaterialDesignDatePicker}"
+                        SelectedDate="{Binding OwnershipStartDate}"
+                        materialDesign:HintAssist.Hint="Дата начала владения" />
+
+                    <Button Content="Привязать адрес"
+                    Margin="0,10,0,0"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Command="{Binding BindAddressCommand}" />
+                </StackPanel>
+            </GroupBox>
+            <Button  Grid.Column="1" Padding="0"
+                    Style="{StaticResource MaterialDesignFlatMidBgButton}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Width="20"
+                    Height="20"
+                    ToolTip="Закрыть окно" FontSize="16" Click="Button_Click" Margin="0,-5,0,0" >
+                <materialDesign:PackIcon Kind="Close" Foreground="White"></materialDesign:PackIcon>
+            </Button>
+        </Grid>
+    </Border>
+
+    
+</Window>
