@@ -26,7 +26,7 @@ namespace HCSSystem.ViewModels
             get => _searchQuery;
             set { _searchQuery = value; OnPropertyChanged(); ApplyFilter(); }
         }
-
+        public bool CanManageEmployees => App.CurrentUser?.Role?.Name == "Администратор";
         public Role SelectedRole
         {
             get => _selectedRole;

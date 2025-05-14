@@ -35,7 +35,7 @@
             <Button Content="Добавить"
                     Command="{Binding AddCommand}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    Background="#FF2196F3"
+                    Background="#FF2196F3" Visibility="{Binding CanManageEmployees, Converter={StaticResource BoolToVisibilityConverter}}"
                     Foreground="White" />
         </StackPanel>
 
@@ -73,30 +73,36 @@
                 <DataGridTemplateColumn Header="Действия" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <materialDesign:PopupBox
-                                PlacementMode="RightAndAlignMiddles"
-                                ToolTip="Меню"
-                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
-                                ToolTipService.Placement="Right" Width="30" Height="30">
-                                <StackPanel HorizontalAlignment="Center">
-                                    <Button 
-                                        Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}">
-                                        <materialDesign:PackIcon Kind="Edit" />
-                                    </Button>
-                                    <Button
-                                        Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}">
-                                        <materialDesign:PackIcon Kind="Trash" />
-                                    </Button>
-                                    <Button 
-                                        ToolTip="{Binding IsActive, Converter={StaticResource ActiveToBlockTooltipConverter}}"
-                                        Command="{Binding DataContext.BlockUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}">
-                                        <materialDesign:PackIcon Kind="{Binding IsActive, Converter={StaticResource ActiveToIconConverter}}" />
-                                    </Button>
-                                </StackPanel>
-                            </materialDesign:PopupBox>
+                            <StackPanel Visibility="{Binding DataContext.CanManageEmployees, Converter={StaticResource BoolToVisibilityConverter}}">
+                               <materialDesign:PopupBox
+                                   PlacementMode="RightAndAlignMiddles"
+                                   Visibility="{Binding DataContext.CanManageEmployees, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}"
+                                   ToolTip="Меню" 
+                                   Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                   ToolTipService.Placement="Right" Width="30" Height="30">
+                                   <StackPanel HorizontalAlignment="Center">
+                                       <Button 
+                                           Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           Visibility="{Binding CanManageEmployees, Converter={StaticResource BoolToVisibilityConverter}}"
+                                           CommandParameter="{Binding}">
+                                           <materialDesign:PackIcon Kind="Edit" />
+                                       </Button>
+                                       <Button
+                                           Visibility="{Binding CanManageEmployees, Converter={StaticResource BoolToVisibilityConverter}}"
+                                           Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           CommandParameter="{Binding}">
+                                           <materialDesign:PackIcon Kind="Trash" />
+                                       </Button>
+                                       <Button 
+                                           Visibility="{Binding CanManageEmployees, Converter={StaticResource BoolToVisibilityConverter}}"
+                                           ToolTip="{Binding IsActive, Converter={StaticResource ActiveToBlockTooltipConverter}}"
+                                           Command="{Binding DataContext.BlockUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           CommandParameter="{Binding}">
+                                           <materialDesign:PackIcon Kind="{Binding IsActive, Converter={StaticResource ActiveToIconConverter}}" />
+                                       </Button>
+                                   </StackPanel>
+                               </materialDesign:PopupBox>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

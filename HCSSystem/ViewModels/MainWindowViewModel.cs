@@ -92,9 +92,9 @@ namespace HCSSystem.ViewModels
 
             RoleName = user.Role?.Name ?? "";
             var lowerRole = RoleName.ToLower();
-            IsAdmin = lowerRole == "администратор" || lowerRole == "сотрудник";
+            IsAdmin = lowerRole == "администратор";
             IsClient = lowerRole == "клиент";
-            IsEmployeesVisible = lowerRole == "администратор";
+            IsEmployeesVisible = lowerRole == "администратор" || lowerRole == "сотрудник";
 
             if (IsClient)
             {
