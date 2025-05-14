@@ -38,14 +38,35 @@ namespace HCSSystem.ViewModels
         public ICommand DeleteCommand { get; }
 
         private List<UserViewModel> _allEmployees = new();
+        public ICommand BlockUserCommand { get; }
 
         public EmployeesViewModel()
         {
             AddCommand = new RelayCommand(_ => AddEmployee());
             EditCommand = new RelayCommand(emp => EditEmployee(emp as UserViewModel));
             DeleteCommand = new RelayCommand(emp => DeleteEmployee(emp as UserViewModel));
-
+            BlockUserCommand = new RelayCommand(clientObj => BlockUser(clientObj as UserViewModel));
             LoadRoles();
+            LoadEmployees();
+        }
+
+        private void BlockUser(UserViewModel? client)
+        {
+            if (client == null) return;
+            using var db = new HcsDbContext();
+            var user = db.Users.FirstOrDefault(u => u.Id == client.Id);
+            if (user == null) return;
+
+            var word = user.IsActive ? "Заблокировать" : "Разблокировать";
+
+            var result = MessageBox.Show($"{word} сотрудника {client.Username}?", "Подтверждение", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes) return;
+
+
+
+            user.IsActive = !user.IsActive;
+            db.SaveChanges();
+
             LoadEmployees();
         }
 

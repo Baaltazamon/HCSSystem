@@ -28,12 +28,34 @@ namespace HCSSystem.ViewModels
         public ICommand EditCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand OpenClientAddressesCommand { get; }
+        public ICommand BlockUserCommand { get; }
         public ClientsViewModel()
         {
             AddCommand = new RelayCommand(_ => AddClient());
             EditCommand = new RelayCommand(client => EditClient(client as UserViewModel));
             DeleteCommand = new RelayCommand(client => DeleteClient(client as UserViewModel));
             OpenClientAddressesCommand = new RelayCommand(OpenClientAddresses);
+            BlockUserCommand = new RelayCommand(clientObj => BlockUser(clientObj as UserViewModel));
+            LoadClients();
+        }
+
+        private void BlockUser(UserViewModel? client)
+        {
+            if (client == null) return;
+            using var db = new HcsDbContext();
+            var user = db.Users.FirstOrDefault(u => u.Id == client.Id);
+            if (user == null) return;
+
+            var word = user.IsActive ? "Заблокировать" : "Разблокировать";
+
+            var result = MessageBox.Show($"{word} клиента {client.Username}?", "Подтверждение", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes) return;
+
+            
+
+            user.IsActive = !user.IsActive;
+            db.SaveChanges();
+
             LoadClients();
         }
 

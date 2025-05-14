@@ -509,6 +509,8 @@
             <local:BoolToHiddenVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <local:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter" />
             <local:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter" />
+            <local:ActiveToBlockTooltipConverter x:Key="ActiveToBlockTooltipConverter" />
+            <local:ActiveToIconConverter x:Key="ActiveToIconConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

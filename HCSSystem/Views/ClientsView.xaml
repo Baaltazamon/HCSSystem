@@ -84,6 +84,13 @@
                                            CommandParameter="{Binding}">
                                         <materialDesign:PackIcon Kind="MapMarker" />
                                     </Button>
+                                    <Button 
+                                        ToolTip="{Binding IsActive, Converter={StaticResource ActiveToBlockTooltipConverter}}"
+                                        Command="{Binding DataContext.BlockUserCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}">
+                                        <materialDesign:PackIcon Kind="{Binding IsActive, Converter={StaticResource ActiveToIconConverter}}" />
+                                    </Button>
+
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </DataTemplate>

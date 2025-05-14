@@ -45,9 +45,14 @@ namespace HCSSystem.ViewModels
                 .Include(u => u.Role)
                 .FirstOrDefault(u => u.Username == Username);
 
-            if (user == null || !user.IsActive)
+            if (user == null)
             {
-                MessageBox.Show("Аккаунт не найден или не активен", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Аккаунт не найден", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (!user.IsActive)
+            {
+                MessageBox.Show("Пользователь заблокирован", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
